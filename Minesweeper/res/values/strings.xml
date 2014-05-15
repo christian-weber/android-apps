@@ -13,5 +13,7 @@
     <string name="start_new_game">Möchten Sie das derzeitige Spiel beenden</string>
     <string name="new_game_started">Neues Spiel gestartet</string>
     <string name="game_over_message">Spiel beendet. Neues Spiel starten?</string>
+    <string name="action_clearRanking">Löschen</string>
+    <string name="clearRanking">Soll das Ranking wirklich gelöscht werden?</string>
 
 </resources>

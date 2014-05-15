@@ -2,6 +2,8 @@ package com.example.minesweeper.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,11 +16,14 @@ import android.widget.TextView;
 
 import com.example.minesweeper.MineField;
 import com.example.minesweeper.R;
+import com.example.minesweeper.dialog.DeleteRankingDialogFactory;
+import com.example.minesweeper.storage.DictionaryOpenHelper;
 
 public class RankingActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ranking);
 
@@ -36,16 +41,36 @@ public class RankingActivity extends Activity {
 
 		layout.addView(header);
 
-		for (int i = 1; i < 10; i++) {
+		DictionaryOpenHelper dictionary = null;
+		dictionary = new DictionaryOpenHelper(getApplicationContext());
+		SQLiteDatabase db = dictionary.getReadableDatabase();
+
+		Cursor cursor = null;
+		cursor = db.query("RANKING", null, null, null, null, null, "TIME");
+
+		if (!cursor.moveToFirst()) {
+			return;
+		}
+
+		int i = 1;
+		boolean hasNext = true;
+		while (hasNext) {
+
+			String name = cursor.getString(cursor.getColumnIndex("NAME"));
+			long time = cursor.getLong(cursor.getColumnIndex("TIME"));
+
 			TableRow row = new TableRow(getApplicationContext());
 			row.setGravity(Gravity.CENTER);
 
-			row.addView(greenBg(bold(center(text(i + "")))));
-			row.addView(greenFg(left(text("Name .........................................................."))));
-			row.addView(right(bold(text("Zeit"))));
+			row.addView(greenBg(bold(center(text(i++ + "")))));
+			row.addView(greenFg(left(text(name))));
+			row.addView(right(bold(text(String.valueOf(time)))));
 
 			layout.addView(row);
+
+			hasNext = cursor.moveToNext();
 		}
+		cursor.close();
 	}
 
 	private TextView right(TextView textView) {
@@ -79,34 +104,39 @@ public class RankingActivity extends Activity {
 	}
 
 	private TextView text(String text) {
+		int style = android.R.style.TextAppearance_Large;
+
 		TextView textView = new TextView(getApplicationContext());
 		textView.setText(text);
 		textView.setMinimumHeight(40);
-		textView.setTextAppearance(getApplicationContext(),
-				android.R.style.TextAppearance_Large);
+		textView.setTextAppearance(getApplicationContext(), style);
 
 		return textView;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.ranking, menu);
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.action_ranking:
 			return true;
 		case R.id.action_newgame:
 			Intent intent = new Intent(getApplicationContext(), MineField.class);
 			startActivity(intent);
+			return true;
+		case R.id.action_clearRanking:
+			DeleteRankingDialogFactory.getDialog(this).show();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

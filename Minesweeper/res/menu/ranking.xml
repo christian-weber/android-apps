@@ -12,5 +12,10 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_newgame"/>
+    <item
+        android:id="@+id/action_clearRanking"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_clearRanking"/>
 
 </menu>

@@ -28,13 +28,14 @@ public class MineField extends Activity implements MenuAware {
 	public static final String STORE_NAME = "Minesweeper";
 	public static final String NUMBER_OF_TOTAL_MINES = "numberOfTotalMines";
 	public static final String NUMBER_OF_MARKED_MINES = "numberOfMarkedMines";
+	public static final String TIME_STARTED = "timeStarted";
 
 	private int columnCount = 5;
 	private int rowCount = 8;
 	private MineArea mineAreas[][];
 	private TableLayout mineField;
 	private int numberOfTotalMines = 8;
-
+	
 	// hold the menu to get access to the menu item
 	private Menu menu;
 
@@ -77,6 +78,7 @@ public class MineField extends Activity implements MenuAware {
 		Editor editor = sp.edit();
 		editor.putInt(NUMBER_OF_TOTAL_MINES, numberOfTotalMines);
 		editor.putInt(NUMBER_OF_MARKED_MINES, 0);
+		editor.putLong(TIME_STARTED, System.currentTimeMillis());
 		editor.apply();
 
 		listener = new MineMarkerSharedPreferencesChangedListener(this);
