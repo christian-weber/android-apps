@@ -1,13 +1,15 @@
 package com.example.minesweeper.listener;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.example.minesweeper.MineArea;
 import com.example.minesweeper.MineField;
+import com.example.minesweeper.R;
 
-public class AreaClickListener extends Activity implements OnClickListener {
+public class AreaClickListener implements OnClickListener {
 
 	private final MineField mineField;
 	private final int rowIndex;
@@ -36,7 +38,16 @@ public class AreaClickListener extends Activity implements OnClickListener {
 				uncoverSurrounding(rowIndex, colIndex);
 			}
 		} else {
-			// TODO: End game
+			 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+			 builder.setMessage(R.string.game_over_message);
+			 
+			 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		               mineField.newGame();
+		           }
+		       });
+
+			 builder.create().show();
 		}
 	}
 	

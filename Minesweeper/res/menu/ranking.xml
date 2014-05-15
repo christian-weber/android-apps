@@ -1,7 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.minesweeper.MineField" >
+    tools:context="com.example.minesweeper.RankingActivity" >
 
     <item
         android:id="@+id/action_ranking"
@@ -13,10 +12,5 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_newgame"/>
-    <item
-        android:id="@+id/action_markedMines"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="@string/action_markedMines"/>
 
 </menu>

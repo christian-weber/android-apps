@@ -1,23 +1,22 @@
 package com.example.minesweeper.listener;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.widget.TextView;
 
 import com.example.minesweeper.MineArea;
 import com.example.minesweeper.MineField;
 
-public class AreaLongClickListener extends Activity implements
+public class AreaLongClickListener implements
 		OnLongClickListener {
 
-	private final TextView mineCountView;
 	private final MineField mineField;
 	private final int rowIndex;
 	private final int colIndex;
 
 	public AreaLongClickListener(MineField mineField, int rowIndex, int colIndex) {
-		this.mineCountView = mineField.getMineCountView();
 		this.mineField = mineField;
 		this.rowIndex = rowIndex;
 		this.colIndex = colIndex;
@@ -27,24 +26,31 @@ public class AreaLongClickListener extends Activity implements
 	public boolean onLongClick(View v) {
 		MineArea[][]mineAreas = mineField.getMineAreas();
 		
-		String text = mineCountView.getText().toString();
-		int newMineCount = Integer.parseInt(text);
-
+		String name = MineField.STORE_NAME;
+		
+		SharedPreferences settings = v.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+		int nrOfMarkedMines = settings.getInt(MineField.NUMBER_OF_MARKED_MINES, 0);
+		
 		if (mineAreas[rowIndex][colIndex].isFree()) {
 			return true;
 		}
 
 		if (mineAreas[rowIndex][colIndex].isMarked()) {
 			mineAreas[rowIndex][colIndex].removeMark();
-			++newMineCount;
+			--nrOfMarkedMines;
 		}
 
 		else {
 			mineAreas[rowIndex][colIndex].mark();
-			--newMineCount;
+			++nrOfMarkedMines;
 		}
 
-		mineCountView.setText(Integer.toString(newMineCount));
+		nrOfMarkedMines = Math.max(nrOfMarkedMines, 0);
+		
+		Editor editor = settings.edit();
+		editor.putInt(MineField.NUMBER_OF_MARKED_MINES, nrOfMarkedMines);
+		editor.apply();
+		
 		return true;
 	}
 }

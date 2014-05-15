@@ -3,12 +3,10 @@
     android:layout_height="fill_parent" >
 
     <TableLayout
-        android:id="@+id/Mine_Field"
+        android:id="@+id/container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@layout/cellshape"
-        android:gravity="bottom"
-        android:stretchColumns="*" >
+        android:stretchColumns="0,1,2" >
     </TableLayout>
 
 </ScrollView>
