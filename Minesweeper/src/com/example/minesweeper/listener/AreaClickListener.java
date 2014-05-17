@@ -65,16 +65,29 @@ public class AreaClickListener implements OnClickListener {
 	private void storeRankingEntry(Context context) {
 		 WonGameDialogFactory.getDialog(context).show();
 	}
+	
+	public int getRowCount() {
+		return mineField.getRowCount();
+	}
+	
+	public int getColumnCount() {
+		return mineField.getColumnCount();
+	}
 
-	private boolean isGameWon() {
+	public boolean isGameWon() {
 		int count = 0;
 
 		MineArea[][] mineAreas = getMineAreas();
-		for (int i = 0; i < mineField.getRowCount(); i++) {
-			for (int j = 0; j < mineField.getColumnCount(); j++) {
+		for (int i = 0; i < getRowCount(); i++) {
+			for (int j = 0; j < getColumnCount(); j++) {
 				MineArea mineArea = mineAreas[i][j];
-				if (mineArea.isMarked() || mineArea.isFree()) {
-					count++;
+				if (mineArea.isMarked()) {
+					System.out.println("increment count");
+					count += 1;
+					continue;
+				}
+				if (mineArea.isFree()) {
+					continue;
 				} else {
 					return false;
 				}
