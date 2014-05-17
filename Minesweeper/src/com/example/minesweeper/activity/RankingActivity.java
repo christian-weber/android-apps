@@ -45,6 +45,8 @@ public class RankingActivity extends Activity {
 		dictionary = new DictionaryOpenHelper(getApplicationContext());
 		SQLiteDatabase db = dictionary.getReadableDatabase();
 
+		// TODO: create a repository class
+		// and a Ranking bean class
 		Cursor cursor = null;
 		cursor = db.query("RANKING", null, null, null, null, null, "TIME");
 

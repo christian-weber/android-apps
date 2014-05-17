@@ -1,11 +1,13 @@
 package com.example.minesweeper;
 
+import static com.example.minesweeper.preferences.Preferences.NUMBER_OF_MARKED_MINES;
+import static com.example.minesweeper.preferences.Preferences.NUMBER_OF_TOTAL_MINES;
+import static com.example.minesweeper.preferences.Preferences.STORE_NAME;
+import static com.example.minesweeper.preferences.Preferences.TIME_STARTED;
+
 import java.util.Random;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -15,9 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.Toast;
 
 import com.example.minesweeper.activity.RankingActivity;
+import com.example.minesweeper.dialog.StartNewGameDialogFactory;
 import com.example.minesweeper.listener.AreaClickListener;
 import com.example.minesweeper.listener.AreaLongClickListener;
 import com.example.minesweeper.preferences.MenuAware;
@@ -25,17 +27,12 @@ import com.example.minesweeper.preferences.MineMarkerSharedPreferencesChangedLis
 
 public class MineField extends Activity implements MenuAware {
 
-	public static final String STORE_NAME = "Minesweeper";
-	public static final String NUMBER_OF_TOTAL_MINES = "numberOfTotalMines";
-	public static final String NUMBER_OF_MARKED_MINES = "numberOfMarkedMines";
-	public static final String TIME_STARTED = "timeStarted";
-
 	private int columnCount = 5;
 	private int rowCount = 8;
 	private MineArea mineAreas[][];
 	private TableLayout mineField;
 	private int numberOfTotalMines = 8;
-	
+
 	// hold the menu to get access to the menu item
 	private Menu menu;
 
@@ -56,11 +53,14 @@ public class MineField extends Activity implements MenuAware {
 		return mineAreas;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mine_field);
-
+		
 		mineField = (TableLayout) findViewById(R.id.Mine_Field);
 		createMineGrid();
 		placeMines();
@@ -221,36 +221,11 @@ public class MineField extends Activity implements MenuAware {
 	}
 
 	/**
-	 * Shows the confirm dialog. The player can choose between the option
-	 * to start a new game and to cancel.
+	 * Shows the confirm dialog. The player can choose between the option to
+	 * start a new game and to cancel.
 	 */
 	private void showConfirmDialog() {
-		final Context context = getApplicationContext();
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.start_new_game);
-
-		// Yes button
-		builder.setPositiveButton(android.R.string.yes,
-
-		new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				newGame();
-
-				int msg = R.string.new_game_started;
-				Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		// No button
-		builder.setNegativeButton(android.R.string.no,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// do nothing
-					}
-				});
-
-		builder.create().show();
+		StartNewGameDialogFactory.getDialog(this).show();
 	}
 
 	/**

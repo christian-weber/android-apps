@@ -14,11 +14,17 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE RANKING (NAME TEXT, TIME BLOB);");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
 		// do nothing

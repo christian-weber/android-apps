@@ -15,5 +15,7 @@
     <string name="game_over_message">Spiel beendet. Neues Spiel starten?</string>
     <string name="action_clearRanking">Löschen</string>
     <string name="clearRanking">Soll das Ranking wirklich gelöscht werden?</string>
+    <string name="won_game">Spiel gewonnen!</string>
+    <string name="insert_name">Bitte geben Sie Ihren Namen ein:</string>
 
 </resources>
